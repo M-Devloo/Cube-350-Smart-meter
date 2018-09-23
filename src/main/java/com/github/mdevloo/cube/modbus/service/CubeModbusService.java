@@ -4,7 +4,6 @@ import com.github.mdevloo.cube.CubeMeter;
 import com.github.mdevloo.cube.modbus.communication.ModbusCommunication;
 import com.github.mdevloo.cube.modbus.communication.conf.SerialModbusCommunication;
 import com.github.mdevloo.cube.modbus.communication.result.ModbusResult;
-import com.github.mdevloo.cube.modbus.register.energy.ModbusRegister;
 import com.github.mdevloo.cube.modbus.service.conf.CubeServiceConfiguration;
 import com.github.mdevloo.runnable.ScheduledFixedExecutorPoolService;
 import com.google.common.base.Preconditions;
@@ -12,7 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -30,8 +28,6 @@ public final class CubeModbusService implements ModbusService {
 
     private final ScheduledFixedExecutorPoolService<List<ModbusResult>> scheduledFixedExecutorPoolService;
 
-    private volatile List<ModbusRegister> modbusRegisters;
-
     public CubeModbusService(final CubeMeter cubeMeter,
                              final CubeServiceConfiguration cubeServiceConfiguration,
                              final CubeMeterCallback cubeMeterCallback) {
@@ -45,7 +41,7 @@ public final class CubeModbusService implements ModbusService {
     public final ScheduledFuture<List<ModbusResult>> startSchedulingService() {
         final Callable<List<ModbusResult>> callable = (() -> {
             try (final ModbusCommunication communication = new SerialModbusCommunication(this.cubeMeter)) {
-                final List<ModbusResult> modbusResults = communication.readMultipleRegisters(this.modbusRegisters);
+                final List<ModbusResult> modbusResults = communication.readMultipleRegisters(this.cubeMeter.getModbusRegisters());
                 if (Objects.nonNull(this.cubeMeterCallback) && !modbusResults.isEmpty()) {
                     this.cubeMeterCallback.notifyRegisterUpdates(modbusResults);
                 }
@@ -67,10 +63,5 @@ public final class CubeModbusService implements ModbusService {
     @Override
     public final void stopSchedulingService() {
         this.scheduledFixedExecutorPoolService.close();
-    }
-
-    @Override
-    public final void subscribeRegisters(final ModbusRegister... modbusRegisterList) {
-        this.modbusRegisters = Arrays.asList(modbusRegisterList);
     }
 }
