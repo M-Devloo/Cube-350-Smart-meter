@@ -3,13 +3,14 @@ package com.github.mdevloo.runnable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public final class ScheduledFixedExecutorPoolService implements ExecutorPoolService {
+public final class ScheduledFixedExecutorPoolService<T> implements ExecutorPoolService<T> {
 
     private static final Logger logger = LoggerFactory.getLogger(ScheduledFixedExecutorPoolService.class);
 
@@ -31,18 +32,19 @@ public final class ScheduledFixedExecutorPoolService implements ExecutorPoolServ
     }
 
     @Override
-    public final ScheduledFuture schedule(final Runnable runnable,
-                                          final long initialDelay,
-                                          final long period,
-                                          final TimeUnit timeUnit) {
+    public final ScheduledFuture<T> schedule(final Callable<T> runnable,
+                                             final long period,
+                                             final TimeUnit timeUnit) {
         synchronized (this.executorService) {
-            return this.executorService.scheduleAtFixedRate(runnable, initialDelay, period, timeUnit);
+            return this.executorService.schedule(runnable, period, timeUnit);
         }
     }
 
     @Override
     public final void close() {
         synchronized (this.executorService) {
+            logger.info("Shutting down the service executor.");
+
             this.executorService.shutdown();
 
             try {

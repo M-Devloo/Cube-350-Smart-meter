@@ -1,5 +1,6 @@
 package com.github.mdevloo.cube.modbus.communication.conf;
 
+import com.ghgande.j2mod.modbus.Modbus;
 import com.ghgande.j2mod.modbus.ModbusException;
 import com.ghgande.j2mod.modbus.facade.ModbusSerialMaster;
 import com.ghgande.j2mod.modbus.net.AbstractSerialConnection;
@@ -44,6 +45,7 @@ public final class SerialModbusCommunication implements ModbusCommunication {
                 DATA_BITS,
                 AbstractSerialConnection.ONE_STOP_BIT,
                 AbstractSerialConnection.NO_PARITY, true);
+        serialParameters.setEncoding(Modbus.SERIAL_ENCODING_RTU);
         this.master = new ModbusSerialMaster(serialParameters, conf.getTimeOut(), TRANSMISSION_DELAY_BETWEEN_FRAMES);
         this.cubeMeter = cubeMeter;
 
