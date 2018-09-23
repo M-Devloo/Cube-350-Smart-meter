@@ -9,7 +9,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import java.util.stream.IntStream;
 
-class EnergyHarmonicsRegisterTest {
+class EnergyHarmonicsModbusRegisterTest {
 
     private static final int MINIMUM_VALID_HARMONIC = 2;
 
@@ -22,21 +22,21 @@ class EnergyHarmonicsRegisterTest {
     @ParameterizedTest
     @EnumSource(PhaseVoltage.class)
     final void voltageHarmonicsRegisterEnum(final PhaseVoltage phaseVoltage) {
-        final EnergyHarmonicsRegister harmonicsRegister = new EnergyHarmonicsRegister(phaseVoltage, 5);
+        final EnergyHarmonicsModbusRegister harmonicsRegister = new EnergyHarmonicsModbusRegister(phaseVoltage, 5);
         Assertions.assertEquals(harmonicsRegister.getHarmonicType(), phaseVoltage);
     }
 
     @ParameterizedTest
     @MethodSource("validRange")
     final void voltageHarmonicsRegisterRange(final int harmonics) {
-        final EnergyHarmonicsRegister harmonicsRegister = new EnergyHarmonicsRegister(PhaseVoltage.PHASE_1, harmonics);
+        final EnergyHarmonicsModbusRegister harmonicsRegister = new EnergyHarmonicsModbusRegister(PhaseVoltage.PHASE_1, harmonics);
         Assertions.assertEquals(harmonicsRegister.getHarmonic(), harmonics);
     }
 
     @ParameterizedTest
     @EnumSource(PhaseCurrent.class)
     final void currentHarmonicsRegisterEnum(final PhaseCurrent phaseCurrent) {
-        final EnergyHarmonicsRegister harmonicsRegister = new EnergyHarmonicsRegister(phaseCurrent, 5);
+        final EnergyHarmonicsModbusRegister harmonicsRegister = new EnergyHarmonicsModbusRegister(phaseCurrent, 5);
         Assertions.assertEquals(harmonicsRegister.getHarmonicType(), phaseCurrent);
     }
 }

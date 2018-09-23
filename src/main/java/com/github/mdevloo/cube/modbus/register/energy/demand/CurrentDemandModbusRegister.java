@@ -1,12 +1,12 @@
 package com.github.mdevloo.cube.modbus.register.energy.demand;
 
 import com.github.mdevloo.cube.modbus.register.access.RegisterAccess;
-import com.github.mdevloo.cube.modbus.register.energy.Register;
+import com.github.mdevloo.cube.modbus.register.energy.ModbusRegister;
 import com.github.mdevloo.cube.modbus.register.scalers.RegisterScaling;
 
 import static com.github.mdevloo.cube.modbus.register.energy.RegisterUtil.REGISTER_OFFSET_MODBUS;
 
-public enum CurrentDemandRegister implements Register {
+public enum CurrentDemandModbusRegister implements ModbusRegister {
     PH1_AMPS_DEMAND(4096, RegisterScaling.KI),
     PH2_AMPS_DEMAND(4097, RegisterScaling.KI),
     PH3_AMPS_DEMAND(4098, RegisterScaling.KI),
@@ -22,7 +22,7 @@ public enum CurrentDemandRegister implements Register {
 
     private final RegisterScaling registerScaling;
 
-    CurrentDemandRegister(final int registerValue, final RegisterScaling registerScaling) {
+    CurrentDemandModbusRegister(final int registerValue, final RegisterScaling registerScaling) {
         this.registerValue = registerValue;
         registerAccess = RegisterAccess.READ;
         this.registerScaling = registerScaling;

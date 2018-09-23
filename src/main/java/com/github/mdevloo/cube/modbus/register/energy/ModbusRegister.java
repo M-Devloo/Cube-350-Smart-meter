@@ -3,9 +3,9 @@ package com.github.mdevloo.cube.modbus.register.energy;
 import com.github.mdevloo.cube.modbus.register.access.RegisterAccess;
 import com.github.mdevloo.cube.modbus.register.scalers.RegisterScaling;
 
-public interface Register {
+public interface ModbusRegister {
 
-    RegisterAccess getRegisterAccess() ;
+    RegisterAccess getRegisterAccess();
 
     int getRegisterValue();
 

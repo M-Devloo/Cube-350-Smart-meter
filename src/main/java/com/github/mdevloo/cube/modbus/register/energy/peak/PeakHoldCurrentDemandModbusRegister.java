@@ -1,24 +1,18 @@
-package com.github.mdevloo.cube.modbus.register.energy;
+package com.github.mdevloo.cube.modbus.register.energy.peak;
 
 import com.github.mdevloo.cube.modbus.register.access.RegisterAccess;
+import com.github.mdevloo.cube.modbus.register.energy.ModbusRegister;
 import com.github.mdevloo.cube.modbus.register.scalers.RegisterScaling;
 
 import static com.github.mdevloo.cube.modbus.register.energy.RegisterUtil.REGISTER_OFFSET_MODBUS;
 
-public enum MeterSetupRegister implements Register {
-    CT_PRIMARY(3584, RegisterAccess.READ_WRITE),
-    NOMINAL_VOLTS(3585, RegisterAccess.READ_WRITE),
-    PULSE_1_RATE(3586, RegisterAccess.READ_WRITE),
-    PULSE_2_RATE(3587, RegisterAccess.READ_WRITE),
-    BAUD(3588, RegisterAccess.READ_WRITE),
-    MODBUS_ID(3589, RegisterAccess.READ_WRITE),
-    METER_MODEL(3590, RegisterAccess.READ),
-    METER_TYPE(3591, RegisterAccess.READ),
-    FIRMWARE_VERSION(3592, RegisterAccess.READ),
-    CURRENT_DEMAND_PERIOD(3593, RegisterAccess.READ_WRITE),
-    PULSE_ON_TIME(3594, RegisterAccess.READ_WRITE),
-    SECURITY_CODE(3595, RegisterAccess.READ_WRITE),
-    HOUS_RUN_TRIP_POINT(3596, RegisterAccess.READ_WRITE);
+public enum PeakHoldCurrentDemandModbusRegister implements ModbusRegister {
+    PEAK_PH1_AMPS_DEMAND(3840, RegisterScaling.KI),
+    PEAK_PH2_AMPS_DEMAND(3841, RegisterScaling.KI),
+    PEAK_PH3_AMPS_DEMAND(3842, RegisterScaling.KI),
+    PEAK_PH1_VOLTS_DEMAND(3843, RegisterScaling.KVP),
+    PEAK_PH2_VOLTS_DEMAND(3844, RegisterScaling.KVP),
+    PEAK_PH3_VOLTS_DEMAND(3845, RegisterScaling.KVP);
 
     private final RegisterAccess registerAccess;
 
@@ -28,11 +22,11 @@ public enum MeterSetupRegister implements Register {
 
     private final RegisterScaling registerScaling;
 
-    MeterSetupRegister(final int registerValue, final RegisterAccess registerAccess) {
+    PeakHoldCurrentDemandModbusRegister(final int registerValue, final RegisterScaling registerScaling) {
         this.registerValue = registerValue;
-        this.registerAccess = registerAccess;
+        registerAccess = RegisterAccess.READ_WRITE;
+        this.registerScaling = registerScaling;
         modbusRegisterValue = REGISTER_OFFSET_MODBUS + this.registerValue;
-        registerScaling = RegisterScaling.NONE;
     }
 
     @Override

@@ -1,12 +1,12 @@
 package com.github.mdevloo.cube.modbus.register.energy.peak;
 
 import com.github.mdevloo.cube.modbus.register.access.RegisterAccess;
-import com.github.mdevloo.cube.modbus.register.energy.Register;
+import com.github.mdevloo.cube.modbus.register.energy.ModbusRegister;
 import com.github.mdevloo.cube.modbus.register.scalers.RegisterScaling;
 
 import static com.github.mdevloo.cube.modbus.register.energy.RegisterUtil.REGISTER_OFFSET_MODBUS;
 
-public enum PeakHoldRegister implements Register {
+public enum PeakHoldModbusRegister implements ModbusRegister {
     PEAK_HOLD_PH1_AMPS(3328, RegisterScaling.KI, RegisterAccess.READ_WRITE),
     PEAK_HOLD_PH2_AMPS(3329, RegisterScaling.KI, RegisterAccess.READ_WRITE),
     PEAK_HOLD_PH3_AMPS(3330, RegisterScaling.KI, RegisterAccess.READ_WRITE),
@@ -27,7 +27,7 @@ public enum PeakHoldRegister implements Register {
 
     private final RegisterScaling registerScaling;
 
-    PeakHoldRegister(final int registerValue, final RegisterScaling registerScaling, final RegisterAccess registerAccess) {
+    PeakHoldModbusRegister(final int registerValue, final RegisterScaling registerScaling, final RegisterAccess registerAccess) {
         this.registerValue = registerValue;
         this.registerAccess = registerAccess;
         this.registerScaling = registerScaling;

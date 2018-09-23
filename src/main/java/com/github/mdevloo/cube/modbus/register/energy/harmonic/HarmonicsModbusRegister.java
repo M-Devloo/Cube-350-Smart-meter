@@ -1,8 +1,8 @@
 package com.github.mdevloo.cube.modbus.register.energy.harmonic;
 
-import com.github.mdevloo.cube.modbus.register.energy.Register;
+import com.github.mdevloo.cube.modbus.register.energy.ModbusRegister;
 
-public interface HarmonicsRegister<T> extends Register {
+public interface HarmonicsModbusRegister<T> extends ModbusRegister {
 
     T getHarmonicType();
 
