@@ -5,13 +5,25 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.mdevloo</groupId>
-    <artifactId>Cube 350 Energy Meter</artifactId>
+    <artifactId>cube-350-smart-metering</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4-api.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ghgande</groupId>
+            <artifactId>j2mod</artifactId>
+            <version>${j2mod.version}</version>
         </dependency>
 
         <dependency>
@@ -33,6 +45,8 @@
         <guava.version>26.0-jre</guava.version>
         <maven-compiler-version>3.8.0</maven-compiler-version>
         <junit-jupiter.version>5.2.0</junit-jupiter.version>
+        <slf4-api.version>1.8.0-beta2</slf4-api.version>
+        <j2mod.version>2.5.1</j2mod.version>
     </properties>
 
     <build>
