@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ModbusCommunication extends AutoCloseable {
 
-    List<ModbusResult> readMultipleRegisters(List<ModbusRegister> modbusRegisters);
+    List<ModbusResult> readMultipleRegisters(final List<ModbusRegister> modbusRegisters);
 
     ModbusResult<ModbusRegister> readRegister(final ModbusRegister register);
 
