@@ -1,7 +1,11 @@
-# Cube 350 Energy meter
+# Cube 350 Energy meter [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](https://github.com/M-Devloo/Cube-350-Smart-meter/issues)
+
 This library allows you to communicate to a Northern Design Cube 350 Smart meter through two-wired modbus (RS485)
 
 This library is still under development till a master release is provided.
+
+## Travis build status
+> [![Build Status](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter.svg?branch=master)](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter)
 
 ## Getting Started
 These instructions will provide you a copy of the project and allows you to get the library up and running on your local machine.
