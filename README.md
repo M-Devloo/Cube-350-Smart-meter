@@ -10,8 +10,8 @@ This library is still under development till a master release is provided.
 **Development**: [![Build Status](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter.svg?branch=development)](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter)
 
 
-## Getting Started
-These instructions will provide you a copy of the project and allows you to get the library up and running on your local machine.
+## Getting Started (Hardware)
+These instructions will allows you to get the library up and running on your local machine.
 
 ### Prerequisites
 ```
@@ -22,7 +22,7 @@ These instructions will provide you a copy of the project and allows you to get 
 ### Required hardware
 ```
 * Cheap CH340 USB to RS485 converter (about 1.5$) or other variants
-* Cube 350 Kwh meter
+* Cube 350 Kwh meter or other variants
 ```
 
 ### Serial port user [Linux]
@@ -54,10 +54,10 @@ Quick summary:
 
 ## Getting Started (Library)
 
-### How to use single-threaded
+### How to use synchronous
 
 > This library has been written as a Multi-threaded polling service in mind which works with a `CubeMeterCallback` that updates the user when Modbus registers are available.  
-Although when wanted, it is also possible to use this single-threaded but just calling the get() method from the returned ScheduledFuture<?>  
+Although when wanted, it is also possible to use this synchronous by just calling the get() method from the returned ScheduledFuture<?>  
 This will block the main thread till all the registers are read out.
 
 ```java
@@ -72,10 +72,10 @@ final class Application {
                 .build();
 
         final CubeServiceConfiguration cubeServiceConfiguration = new CubeServiceConfiguration(10, TimeUnit.SECONDS);
-        final ModbusService cubeModbusService = new CubeModbusService(cubeMeter, cubeServiceConfiguration, null); // callback if using the service else null
+        final ModbusService cubeModbusService = new CubeModbusService(cubeMeter, cubeServiceConfiguration, null); // callback(s) if using the service else null
 
         try {
-            final List<ModbusResult> modbusResults = cubeModbusService.startSchedulingService().get(); // Single-threaded OR use the call-back to get notified as a service.
+            final List<ModbusResult> modbusResults = cubeModbusService.startSchedulingService().get(); // Synchronous OR use the call-back to get notified as a service.
             for (final ModbusResult<?> result : modbusResults) {
                 final ModbusRegister modbusRegister = result.getModbusRegister();
                 final Register register = result.getRegister();
