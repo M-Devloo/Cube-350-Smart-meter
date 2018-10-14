@@ -3,7 +3,7 @@ package com.github.mdevloo.cube.modbus.communication;
 import com.github.mdevloo.cube.modbus.communication.result.CombinedModbusResult;
 import com.github.mdevloo.cube.modbus.communication.result.ModbusResult;
 import com.github.mdevloo.cube.modbus.register.energy.ModbusRegister;
-import com.github.mdevloo.cube.modbus.register.energy.energy.CombinedModbusRegister;
+import com.github.mdevloo.cube.modbus.register.energy.CombinedModbusRegister;
 import com.github.mdevloo.cube.modbus.service.ModbusService;
 
 import java.util.List;

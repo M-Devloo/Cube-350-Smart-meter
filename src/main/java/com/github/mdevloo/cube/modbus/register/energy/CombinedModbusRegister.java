@@ -1,4 +1,4 @@
-package com.github.mdevloo.cube.modbus.register.energy.energy;
+package com.github.mdevloo.cube.modbus.register.energy;
 
 import com.github.mdevloo.cube.modbus.register.energy.ModbusRegister;
 

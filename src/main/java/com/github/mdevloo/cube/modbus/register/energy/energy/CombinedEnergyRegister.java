@@ -1,5 +1,6 @@
 package com.github.mdevloo.cube.modbus.register.energy.energy;
 
+import com.github.mdevloo.cube.modbus.register.energy.CombinedModbusRegister;
 import com.github.mdevloo.cube.modbus.register.energy.ModbusRegister;
 
 public enum CombinedEnergyRegister implements CombinedModbusRegister {
