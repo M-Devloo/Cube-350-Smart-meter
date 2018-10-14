@@ -1,13 +1,13 @@
 package com.github.mdevloo.cube.modbus.communication.result;
 
 import com.ghgande.j2mod.modbus.procimg.Register;
-import com.github.mdevloo.cube.modbus.register.energy.energy.CombinedEnergyRegister;
+import com.github.mdevloo.cube.modbus.register.energy.energy.CombinedModbusRegister;
 import com.github.mdevloo.cube.modbus.service.ModbusService;
 import com.google.common.base.Preconditions;
 
 import java.util.List;
 
-public final class CombinedModbusResult<T extends CombinedEnergyRegister> {
+public final class CombinedModbusResult<T extends CombinedModbusRegister> {
 
     private static final int COMBINED_RESULT_SIZE = 2;
 
