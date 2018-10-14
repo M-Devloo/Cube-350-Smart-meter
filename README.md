@@ -53,16 +53,19 @@ Quick summary:
 
 ### How to use
 
-You can use this library to read out a the Cube 350 Modbus registers through `readEnergyModbusRegister()`.  
-It is not always the case that you want to read out modbus register values.  
-Hence `CombinedEnergyRegister` allows you to read out calculated energy values like Kwh, Kvarh and many more.
+You can use this library to read out one or multiple Cube 350 Modbus energy meter(s).  
+Through `readEnergyModbusRegister()` it is possible to directly access the Modbus registers.  
+It is also possible to read out the calculated energy value through `CombinedEnergyRegister`.  
+This gives you a correct result like Kwh, Kvarh & many more values.  
 
 > This library has been written with simplicity in mind meaning you are in full control of threads, schedulers, ...
 
-#### Example
+#### Example (One Cube)
 ```java
+import static com.github.mdevloo.cube.modbus.register.energy.energy.CombinedEnergyRegister.KWH;
+
 final class Application {
-    
+        
     void cubeReadout() {
             final int id = 5;
             final ModbusConfiguration modbusConfiguration = new ModbusSerialConfiguration("/dev/ttyUSB0",
