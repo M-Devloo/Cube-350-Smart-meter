@@ -2,9 +2,6 @@
 
 This library allows you to communicate to a Northern Design Cube 350 Smart meter through two-wired modbus (RS485)
 
-This library is still under development till a master release is provided.
-
-
 ## Travis build status 
 **Master**: [![Build Status](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter.svg?branch=master)](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter)  
 **Development**: [![Build Status](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter.svg?branch=development)](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter)
@@ -54,39 +51,39 @@ Quick summary:
 
 ## Getting Started (Library)
 
-### How to use synchronous
+### How to use
 
-> This library has been written as a Multi-threaded polling service in mind which works with a `CubeMeterCallback` that updates the user when Modbus registers are available.  
-Although when wanted, it is also possible to use this synchronous by just calling the get() method from the returned ScheduledFuture<?>  
-This will block the main thread till all the registers are read out.
+You can use this library to read out one or multiple Cube 350 Modbus energy meter(s).  
+Through `readEnergyModbusRegister()` it is possible to directly access the Modbus registers.  
+It is also possible to read out the calculated energy value through `CombinedEnergyRegister`.  
+This gives you a correct result like Kwh, Kvarh & many more values.  
 
+> This library has been written with simplicity in mind meaning you are in full control of threads, schedulers, ...
+
+#### Example (One Cube)
 ```java
+import static com.github.mdevloo.cube.modbus.register.energy.energy.CombinedEnergyRegister.KWH;
+
 final class Application {
-    void cubeReadout() {
-        final int id = 5;
-        final ModbusConfiguration modbusConfiguration = new ModbusSerialConfiguration("/dev/ttyUSB0",
-                ModbusCommunication.BaudRate.RATE_9600, 10);
         
-        final CubeMeter cubeMeter = new CubeMeter.Builder(id, modbusConfiguration)
-                .registers(InstantaneousModbusRegister.AMPS_SCALE_KI, InstantaneousModbusRegister.PH1_PH2_VOLTS, InstantaneousModbusRegister.PH2_PH3_VOLTS, InstantaneousModbusRegister.PH3_PH1_VOLTS)
-                .build();
-
-        final CubeServiceConfiguration cubeServiceConfiguration = new CubeServiceConfiguration(10, TimeUnit.SECONDS);
-        final ModbusService cubeModbusService = new CubeModbusService(cubeMeter, cubeServiceConfiguration, null); // callback(s) if using the service else null
-
-        try {
-            final List<ModbusResult> modbusResults = cubeModbusService.startSchedulingService().get(); // Synchronous OR use the call-back to get notified as a service.
-            for (final ModbusResult<?> result : modbusResults) {
-                final ModbusRegister modbusRegister = result.getModbusRegister();
-                final Register register = result.getRegister();
-                final int value = register.getValue();
-
-                logger.info("Value of Register: {} - {}", modbusRegister, value);
-            }
-        } catch (final InterruptedException | ExecutionException e) {
-            logger.error("{}", e.getMessage());
+    void cubeReadout() {
+            final int id = 5;
+            final ModbusConfiguration modbusConfiguration = new ModbusSerialConfiguration("/dev/ttyUSB0",
+                    ModbusCommunication.BaudRate.RATE_9600, 10);
+    
+            final CubeMeter cubeMeter = new CubeMeter.Builder(id, modbusConfiguration)
+                    .registers(InstantaneousModbusRegister.values())
+                    .combinedRegisters(KWH)
+                    .build();
+    
+            final ModbusService cubeModbusService = new CubeModbusService(cubeMeter);
+    
+            final List<CombinedModbusResult> cubeEnergyvalue = cubeModbusService.readEnergyModbusRegister(CubeModbusService.Scaler.KWH);
+            cubeEnergyvalue.forEach(res -> logger.info("Register {} - Energy value :{} KwH", res.getCombinedRegister(), res.calculateEnergyScaling()));
+    
+            final List<ModbusResult> modbusResults = cubeModbusService.readModbusRegisters();
+            modbusResults.forEach(mod -> logger.info("Value of Register: {} - {}", mod.getModbusRegister(), mod.getRegister().getValue()));
         }
-    }
 }
 ```
 
