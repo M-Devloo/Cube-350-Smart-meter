@@ -1,6 +1,7 @@
-package com.github.mdevloo.cube.modbus.register.energy;
+package com.github.mdevloo.cube.modbus.register.energy.instantaneous;
 
 import com.github.mdevloo.cube.modbus.register.access.RegisterAccess;
+import com.github.mdevloo.cube.modbus.register.energy.ModbusRegister;
 import com.github.mdevloo.cube.modbus.register.scalers.RegisterScaling;
 
 import static com.github.mdevloo.cube.modbus.register.energy.RegisterUtil.REGISTER_OFFSET_MODBUS;
