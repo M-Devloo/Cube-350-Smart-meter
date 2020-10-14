@@ -43,11 +43,9 @@ public final class CubeModbusService implements ModbusService {
         final Callable<List<ModbusResult>> callable = (() -> {
             try (final ModbusCommunication communication = new SerialModbusCommunication(this.cubeMeter)) {
                 final List<ModbusResult> modbusResults = communication.readMultipleRegisters(this.cubeMeter.getModbusRegisters());
-                if (Objects.nonNull(this.cubeMeterCallback) && !modbusResults.isEmpty()) {
-                    this.cubeMeterCallback.forEach(x -> x.notifyRegisterUpdates(modbusResults));
-                }
-
                 logger.info("Received {} results from the meter.", modbusResults.size());
+
+                this.meterCallback(modbusResults);
 
                 return modbusResults;
             } catch (final Exception e) {
@@ -59,6 +57,16 @@ public final class CubeModbusService implements ModbusService {
         return this.scheduledFixedExecutorPoolService.schedule(callable,
                 this.cubeServiceConfiguration.getPeriod(),
                 this.cubeServiceConfiguration.getTimeUnit());
+    }
+
+    private void meterCallback(final List<ModbusResult> modbusResults) {
+        if (Objects.nonNull(this.cubeMeterCallback) && !modbusResults.isEmpty()) {
+            try {
+                this.cubeMeterCallback.forEach(x -> x.notifyRegisterUpdates(modbusResults));
+            } catch (final Exception e) {
+                logger.error("Callback exception {}", e.getMessage());
+            }
+        }
     }
 
     @Override
