@@ -44,7 +44,7 @@ public final class SerialModbusCommunication implements ModbusCommunication {
                 AbstractSerialConnection.FLOW_CONTROL_DISABLED,
                 DATA_BITS,
                 AbstractSerialConnection.ONE_STOP_BIT,
-                AbstractSerialConnection.NO_PARITY, true);
+                AbstractSerialConnection.NO_PARITY, false);
         serialParameters.setEncoding(Modbus.SERIAL_ENCODING_RTU);
         this.master = new ModbusSerialMaster(serialParameters, conf.getTimeOut(), TRANSMISSION_DELAY_BETWEEN_FRAMES);
         this.cubeMeter = cubeMeter;
@@ -86,7 +86,7 @@ public final class SerialModbusCommunication implements ModbusCommunication {
     private Register readSingleRegister(final ModbusRegister modbusRegister) {
         synchronized (this.master) {
             try {
-                final Register[] registers = this.master.readMultipleRegisters(this.cubeMeter.getSlaveId(), modbusRegister.getModbusRegisterValue(), SINGLE_REGISTER);
+                final Register[] registers = this.master.readMultipleRegisters(this.cubeMeter.getSlaveId(), modbusRegister.getRegisterValue(), SINGLE_REGISTER);
                 return Arrays.stream(registers).findFirst()
                         .orElseThrow(() -> new ModbusReadException("No registers values returned when reading Register [" + modbusRegister + "]"));
             } catch (final ModbusException e) {
