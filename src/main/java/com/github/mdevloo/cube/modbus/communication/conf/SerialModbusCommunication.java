@@ -13,7 +13,7 @@ import com.github.mdevloo.cube.modbus.communication.exception.ModbusReadExceptio
 import com.github.mdevloo.cube.modbus.communication.result.CombinedModbusResult;
 import com.github.mdevloo.cube.modbus.communication.result.ModbusResult;
 import com.github.mdevloo.cube.modbus.register.energy.ModbusRegister;
-import com.github.mdevloo.cube.modbus.register.energy.energy.CombinedEnergyRegister;
+import com.github.mdevloo.cube.modbus.register.energy.energy.CombinedModbusRegister;
 import com.github.mdevloo.cube.modbus.service.ModbusService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -84,12 +84,14 @@ public final class SerialModbusCommunication implements ModbusCommunication {
     }
 
     @Override
-    public final CombinedModbusResult readCombinedRegister(final CombinedEnergyRegister combinedModbusRegister,
-                                                           final ModbusService.Scaler scaler) {
+    public final List<CombinedModbusResult> readCombinedRegister(final List<CombinedModbusRegister> combinedModbusRegisters,
+                                                                 final ModbusService.Scaler scaler) {
         final ModbusResult escaleResult = this.readRegister(ESCALE_LOW_WORD);
 
-        return new CombinedModbusResult<>(this.readMultipleRegisters(combinedModbusRegister),
-                combinedModbusRegister, escaleResult, scaler);
+        return combinedModbusRegisters.stream()
+                .map(comb -> new CombinedModbusResult<>(this.readOnlyCombinedRegister(comb),
+                        comb, escaleResult, scaler))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -102,19 +104,22 @@ public final class SerialModbusCommunication implements ModbusCommunication {
     private Register readSingleRegister(final ModbusRegister modbusRegister) {
         synchronized (this.master) {
             try {
-                final Register[] registers = this.master.readMultipleRegisters(this.cubeMeter.getSlaveId(), modbusRegister.getRegisterValue(), SINGLE_REGISTER);
+                final Register[] registers = this.master.readMultipleRegisters(this.cubeMeter.getSlaveId(),
+                        modbusRegister.getRegisterValue(), SINGLE_REGISTER);
                 return Arrays.stream(registers).findFirst()
-                        .orElseThrow(() -> new ModbusReadException("No registers values returned when reading Register [" + modbusRegister + "]"));
+                        .orElseThrow(() -> new ModbusReadException("No registers values returned when reading " +
+                                "Register [" + modbusRegister + "]"));
             } catch (final ModbusException e) {
                 throw new ModbusReadException("Read exception: [" + e.getMessage() + "]");
             }
         }
     }
 
-    private List<Register> readMultipleRegisters(final CombinedEnergyRegister combinedEnergyRegister) {
+    private List<Register> readOnlyCombinedRegister(final CombinedModbusRegister combinedModbusRegister) {
         synchronized (this.master) {
             try {
-                final Register[] registers = this.master.readMultipleRegisters(this.cubeMeter.getSlaveId(), combinedEnergyRegister.getLowModbusRegister().getRegisterValue(), DOUBLE_REGISTERS);
+                final Register[] registers = this.master.readMultipleRegisters(this.cubeMeter.getSlaveId(),
+                        combinedModbusRegister.getHighModbusRegister().getRegisterValue(), DOUBLE_REGISTERS);
                 return Arrays.stream(registers).collect(Collectors.toList());
             } catch (final ModbusException e) {
                 throw new ModbusReadException("Read exception: [" + e.getMessage() + "]");

@@ -2,18 +2,14 @@ package com.github.mdevloo.cube.modbus.service;
 
 import com.github.mdevloo.cube.modbus.communication.result.CombinedModbusResult;
 import com.github.mdevloo.cube.modbus.communication.result.ModbusResult;
-import com.github.mdevloo.cube.modbus.register.energy.energy.CombinedEnergyRegister;
 
 import java.util.List;
-import java.util.concurrent.ScheduledFuture;
 
 public interface ModbusService {
 
-    ScheduledFuture<List<ModbusResult>> startSchedulingService();
+    List<ModbusResult> readModbusRegisters();
 
-    void stopSchedulingService();
-
-    CombinedModbusResult readEnergyModbusRegister(final CombinedEnergyRegister combinedEnergyRegister, final Scaler kwh);
+    List<CombinedModbusResult> readEnergyModbusRegister(final Scaler kwh);
 
     enum Scaler {
         WH(3),
