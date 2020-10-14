@@ -1,6 +1,8 @@
 # Cube 350 Energy meter
 This library allows you to communicate to a Northern Design Cube 350 Smart meter through two-wired modbus (RS485)
 
+This library is still under development till a master release is provided.
+
 ## Getting Started
 These instructions will provide you a copy of the project and allows you to get the library up and running on your local machine.
 
