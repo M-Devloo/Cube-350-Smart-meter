@@ -3,7 +3,9 @@ package com.github.mdevloo.cube.modbus.service;
 import com.github.mdevloo.cube.CubeMeter;
 import com.github.mdevloo.cube.modbus.communication.ModbusCommunication;
 import com.github.mdevloo.cube.modbus.communication.conf.SerialModbusCommunication;
+import com.github.mdevloo.cube.modbus.communication.result.CombinedModbusResult;
 import com.github.mdevloo.cube.modbus.communication.result.ModbusResult;
+import com.github.mdevloo.cube.modbus.register.energy.energy.CombinedEnergyRegister;
 import com.github.mdevloo.cube.modbus.service.conf.CubeServiceConfiguration;
 import com.github.mdevloo.runnable.ScheduledFixedExecutorPoolService;
 import com.google.common.base.Preconditions;
@@ -57,6 +59,16 @@ public final class CubeModbusService implements ModbusService {
         return this.scheduledFixedExecutorPoolService.schedule(callable,
                 this.cubeServiceConfiguration.getPeriod(),
                 this.cubeServiceConfiguration.getTimeUnit());
+    }
+
+    @Override
+    public final CombinedModbusResult readEnergyModbusRegister(final CombinedEnergyRegister combinedEnergyRegister, final Scaler scaler) {
+        try (final ModbusCommunication communication = new SerialModbusCommunication(this.cubeMeter)) {
+            return communication.readCombinedRegister(combinedEnergyRegister, scaler);
+        } catch (final Exception e) {
+            logger.error("Modbus communication error: [{}]", e.getMessage());
+            return null;
+        }
     }
 
     private void meterCallback(final List<ModbusResult> modbusResults) {
