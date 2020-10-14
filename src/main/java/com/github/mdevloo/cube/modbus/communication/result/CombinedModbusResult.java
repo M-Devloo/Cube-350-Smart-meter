@@ -1,7 +1,7 @@
 package com.github.mdevloo.cube.modbus.communication.result;
 
 import com.ghgande.j2mod.modbus.procimg.Register;
-import com.github.mdevloo.cube.modbus.register.energy.energy.CombinedModbusRegister;
+import com.github.mdevloo.cube.modbus.register.energy.CombinedModbusRegister;
 import com.github.mdevloo.cube.modbus.service.ModbusService;
 import com.google.common.base.Preconditions;
 

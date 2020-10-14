@@ -2,7 +2,7 @@ package com.github.mdevloo.cube;
 
 import com.github.mdevloo.cube.modbus.communication.conf.ModbusConfiguration;
 import com.github.mdevloo.cube.modbus.register.energy.ModbusRegister;
-import com.github.mdevloo.cube.modbus.register.energy.energy.CombinedModbusRegister;
+import com.github.mdevloo.cube.modbus.register.energy.CombinedModbusRegister;
 
 import java.util.ArrayList;
 import java.util.Arrays;
