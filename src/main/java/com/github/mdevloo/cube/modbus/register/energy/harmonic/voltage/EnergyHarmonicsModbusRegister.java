@@ -3,14 +3,14 @@ package com.github.mdevloo.cube.modbus.register.energy.harmonic.voltage;
 import com.github.mdevloo.cube.modbus.register.access.RegisterAccess;
 import com.github.mdevloo.cube.modbus.register.energy.Energy;
 import com.github.mdevloo.cube.modbus.register.energy.current.Current;
-import com.github.mdevloo.cube.modbus.register.energy.harmonic.HarmonicsRegister;
+import com.github.mdevloo.cube.modbus.register.energy.harmonic.HarmonicsModbusRegister;
 import com.github.mdevloo.cube.modbus.register.energy.voltage.Voltage;
 import com.github.mdevloo.cube.modbus.register.scalers.RegisterScaling;
 import com.google.common.base.Preconditions;
 
 import static com.github.mdevloo.cube.modbus.register.energy.RegisterUtil.REGISTER_OFFSET_MODBUS;
 
-public final class EnergyHarmonicsRegister implements HarmonicsRegister<Energy> {
+public final class EnergyHarmonicsModbusRegister implements HarmonicsModbusRegister<Energy> {
 
     private static final int V1_START_ADDRESS = 7936;
 
@@ -40,7 +40,7 @@ public final class EnergyHarmonicsRegister implements HarmonicsRegister<Energy> 
 
     private final RegisterScaling registerScaling;
 
-    EnergyHarmonicsRegister(final Energy energy, final int harmonic) {
+    EnergyHarmonicsModbusRegister(final Energy energy, final int harmonic) {
         this.energy = Preconditions.checkNotNull(energy, "Voltage cannot be null");
 
         Preconditions.checkArgument(validHarmonic(harmonic, HARMONIC_START, HARMONIC_END),

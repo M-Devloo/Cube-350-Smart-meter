@@ -5,7 +5,7 @@ import com.github.mdevloo.cube.modbus.register.scalers.RegisterScaling;
 
 import static com.github.mdevloo.cube.modbus.register.energy.RegisterUtil.REGISTER_OFFSET_MODBUS;
 
-public enum EnergyRegister implements Register {
+public enum EnergyModbusRegister implements ModbusRegister {
     ESCALE_HIGH_WORD(512, RegisterAccess.READ),
     ESCALE_LOW_WORD(513, RegisterAccess.READ),
     KWH_HIGH_WORD(514, RegisterAccess.READ_WRITE),
@@ -33,7 +33,7 @@ public enum EnergyRegister implements Register {
 
     private final RegisterScaling registerScaling;
 
-    EnergyRegister(final int registerValue, final RegisterAccess registerAccess) {
+    EnergyModbusRegister(final int registerValue, final RegisterAccess registerAccess) {
         this.registerValue = registerValue;
         this.registerAccess = registerAccess;
         registerScaling = RegisterScaling.NONE;

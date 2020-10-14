@@ -5,7 +5,7 @@ import com.github.mdevloo.cube.modbus.register.scalers.RegisterScaling;
 
 import static com.github.mdevloo.cube.modbus.register.energy.RegisterUtil.REGISTER_OFFSET_MODBUS;
 
-public enum InstantaneousRegister implements Register {
+public enum InstantaneousModbusRegister implements ModbusRegister {
     SYSTEM_KW(2816, RegisterScaling.KP),
     SYSTEM_KVA(2817, RegisterScaling.KP),
     SYSTEM_KVAR(2818, RegisterScaling.KP),
@@ -46,7 +46,7 @@ public enum InstantaneousRegister implements Register {
 
     private final RegisterScaling registerScaling;
 
-    InstantaneousRegister(final int registerValue, final RegisterScaling registerScaling) {
+    InstantaneousModbusRegister(final int registerValue, final RegisterScaling registerScaling) {
         this.registerValue = registerValue;
         registerAccess = RegisterAccess.READ;
         this.registerScaling = registerScaling;
