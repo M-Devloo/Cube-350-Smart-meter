@@ -4,15 +4,18 @@ This library allows you to communicate to a Northern Design Cube 350 Smart meter
 
 This library is still under development till a master release is provided.
 
-## Travis build status
-> [![Build Status](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter.svg?branch=master)](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter)
+
+## Travis build status 
+**Master**: [![Build Status](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter.svg?branch=master)](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter)  
+**Development**: [![Build Status](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter.svg?branch=development)](https://travis-ci.com/M-Devloo/Cube-350-Smart-meter)
+
 
 ## Getting Started
 These instructions will provide you a copy of the project and allows you to get the library up and running on your local machine.
 
 ### Prerequisites
 ```
-Java 8 (Tested with Zulu 1.8_181)
+A minimum of Java 8 is required for this library. 
 ```
 
 ### Required hardware
