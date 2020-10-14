@@ -17,4 +17,4 @@ Java 8 (Tested with Zulu 1.8_181)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](../LICENSE) file for details
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details
