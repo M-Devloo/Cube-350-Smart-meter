@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.Callable;
@@ -24,16 +25,16 @@ public final class CubeModbusService implements ModbusService {
 
     private final CubeServiceConfiguration cubeServiceConfiguration;
 
-    private final CubeMeterCallback cubeMeterCallback;
+    private final List<CubeMeterCallback> cubeMeterCallback;
 
     private final ScheduledFixedExecutorPoolService<List<ModbusResult>> scheduledFixedExecutorPoolService;
 
     public CubeModbusService(final CubeMeter cubeMeter,
                              final CubeServiceConfiguration cubeServiceConfiguration,
-                             final CubeMeterCallback cubeMeterCallback) {
+                             final CubeMeterCallback... cubeMeterCallback) {
         this.cubeMeter = Preconditions.checkNotNull(cubeMeter, "Not possible to start the initializations with null cubes");
         this.cubeServiceConfiguration = cubeServiceConfiguration;
-        this.cubeMeterCallback = cubeMeterCallback;
+        this.cubeMeterCallback = Objects.isNull(cubeMeterCallback) ? null : Arrays.asList(cubeMeterCallback);
         this.scheduledFixedExecutorPoolService = new ScheduledFixedExecutorPoolService<>(1);
     }
 
@@ -43,7 +44,7 @@ public final class CubeModbusService implements ModbusService {
             try (final ModbusCommunication communication = new SerialModbusCommunication(this.cubeMeter)) {
                 final List<ModbusResult> modbusResults = communication.readMultipleRegisters(this.cubeMeter.getModbusRegisters());
                 if (Objects.nonNull(this.cubeMeterCallback) && !modbusResults.isEmpty()) {
-                    this.cubeMeterCallback.notifyRegisterUpdates(modbusResults);
+                    this.cubeMeterCallback.forEach(x -> x.notifyRegisterUpdates(modbusResults));
                 }
 
                 logger.info("Received {} results from the meter.", modbusResults.size());
