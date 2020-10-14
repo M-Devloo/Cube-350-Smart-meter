@@ -11,16 +11,16 @@ import com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ScheduledFuture;
 
 public final class CubeModbusService implements ModbusService {
 
     private static final Logger logger = LoggerFactory.getLogger(CubeModbusService.class);
-
-    private static final int SCHEDULED_START_DELAY = 0;
 
     private final CubeMeter cubeMeter;
 
@@ -28,7 +28,7 @@ public final class CubeModbusService implements ModbusService {
 
     private final CubeMeterCallback cubeMeterCallback;
 
-    private final ScheduledFixedExecutorPoolService scheduledFixedExecutorPoolService;
+    private final ScheduledFixedExecutorPoolService<List<ModbusResult>> scheduledFixedExecutorPoolService;
 
     private volatile List<ModbusRegister> modbusRegisters;
 
@@ -38,12 +38,12 @@ public final class CubeModbusService implements ModbusService {
         this.cubeMeter = Preconditions.checkNotNull(cubeMeter, "Not possible to start the initializations with null cubes");
         this.cubeServiceConfiguration = cubeServiceConfiguration;
         this.cubeMeterCallback = cubeMeterCallback;
-        this.scheduledFixedExecutorPoolService = new ScheduledFixedExecutorPoolService(1);
+        this.scheduledFixedExecutorPoolService = new ScheduledFixedExecutorPoolService<>(1);
     }
 
     @Override
-    public final ScheduledFuture startSchedulingService() {
-        return this.scheduledFixedExecutorPoolService.schedule(() -> {
+    public final ScheduledFuture<List<ModbusResult>> startSchedulingService() {
+        final Callable<List<ModbusResult>> callable = (() -> {
             try (final ModbusCommunication communication = new SerialModbusCommunication(this.cubeMeter)) {
                 final List<ModbusResult> modbusResults = communication.readMultipleRegisters(this.modbusRegisters);
                 if (Objects.nonNull(this.cubeMeterCallback) && !modbusResults.isEmpty()) {
@@ -51,10 +51,17 @@ public final class CubeModbusService implements ModbusService {
                 }
 
                 logger.info("Received {} results from the meter.", modbusResults.size());
+
+                return modbusResults;
             } catch (final Exception e) {
                 logger.error("Modbus communication error: [{}]", e.getMessage());
+                return new ArrayList<>();
             }
-        }, SCHEDULED_START_DELAY, this.cubeServiceConfiguration.getPeriod(), this.cubeServiceConfiguration.getTimeUnit());
+        });
+
+        return this.scheduledFixedExecutorPoolService.schedule(callable,
+                this.cubeServiceConfiguration.getPeriod(),
+                this.cubeServiceConfiguration.getTimeUnit());
     }
 
     @Override

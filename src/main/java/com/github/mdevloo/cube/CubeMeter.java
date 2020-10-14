@@ -4,6 +4,7 @@ import com.github.mdevloo.cube.modbus.communication.conf.ModbusConfiguration;
 import com.github.mdevloo.cube.modbus.register.energy.ModbusRegister;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public final class CubeMeter {
@@ -42,8 +43,8 @@ public final class CubeMeter {
             this.modbusConfiguration = modbusConfiguration;
         }
 
-        public final Builder registers(final List<ModbusRegister> modbusRegisters) {
-            this.modbusRegisters = modbusRegisters;
+        public final Builder registers(final ModbusRegister... modbusRegisters) {
+            this.modbusRegisters = Arrays.asList(modbusRegisters);
             return this;
         }
 
