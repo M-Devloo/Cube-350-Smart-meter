@@ -6,40 +6,54 @@
 
     <groupId>com.github.mdevloo</groupId>
     <artifactId>cube-350-smart-metering</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+
+    <properties>
+        <java.version>8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <guava.version>29.0-jre</guava.version>
+        <junit-jupiter.version>5.7.0</junit-jupiter.version>
+        <slf4.version>2.0.0-alpha1</slf4.version>
+        <j2mod.version>2.7.0</j2mod.version>
+        <maven-surefire-plugin>3.0.0-M5</maven-surefire-plugin>
+        <maven-compiler-version>3.8.1</maven-compiler-version>
+    </properties>
+
+    <version>1-0-SNAPSHOT</version>
     <dependencies>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
             <version>${guava.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
             <version>${slf4.version}</version>
         </dependency>
-
         <dependency>
             <groupId>com.ghgande</groupId>
             <artifactId>j2mod</artifactId>
             <version>${j2mod.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-params</artifactId>
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-simple</artifactId>
@@ -48,16 +62,13 @@
         </dependency>
     </dependencies>
 
-    <properties>
-        <guava.version>26.0-jre</guava.version>
-        <maven-compiler-version>3.8.0</maven-compiler-version>
-        <junit-jupiter.version>5.2.0</junit-jupiter.version>
-        <slf4.version>1.8.0-beta2</slf4.version>
-        <j2mod.version>2.5.1</j2mod.version>
-    </properties>
-
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin}</version>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
