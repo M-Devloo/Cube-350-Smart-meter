@@ -11,7 +11,7 @@
         <java.version>8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <guava.version>29.0-jre</guava.version>
+        <guava.version>32.0.0-jre</guava.version>
         <junit-jupiter.version>5.7.0</junit-jupiter.version>
         <slf4.version>2.0.0-alpha1</slf4.version>
         <j2mod.version>2.7.0</j2mod.version>
